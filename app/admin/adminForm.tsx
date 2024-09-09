@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import {
 	Card,
 	CardContent,
@@ -19,14 +19,17 @@ import {
 	SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import createPost, { updatePost } from "@/actions/PostActions";
+import { Post } from "@prisma/client";
 import Link from "next/link";
-import { buttonVariants } from "@/components/ui/button";
-import createPost from "@/actions/PostActions";
-import DeletePostButton from "@/components/DeletePostButton";
-export function AdminForm() {
+
+export function AdminForm({ post }: { post: Post }) {
+	const formAction = post?.id ? updatePost : createPost;
+
 	return (
 		<div>
-			<form action={createPost}>
+			<form action={formAction}>
+				<input type="hidden" name="id" value={post?.id} />
 				<Card className="w-[650px]">
 					<CardHeader>
 						<CardTitle>Create post</CardTitle>
@@ -38,7 +41,12 @@ export function AdminForm() {
 						<div className="grid w-full items-center gap-4">
 							<div className="flex flex-col space-y-1.5">
 								<Label htmlFor="name">Post Name</Label>
-								<Input name="name" id="name" placeholder="Name of the post" />
+								<Input
+									name="name"
+									id="name"
+									placeholder="Name of the post"
+									defaultValue={post?.name}
+								/>
 							</div>
 							<div className="flex flex-col space-y-1.5">
 								<Label htmlFor="description">Post Description</Label>
@@ -46,6 +54,7 @@ export function AdminForm() {
 									name="description"
 									id="description"
 									placeholder="Description of the post"
+									defaultValue={post?.description}
 								/>
 							</div>
 							<div className="flex flex-col space-y-1.5">
@@ -54,11 +63,12 @@ export function AdminForm() {
 									name="content"
 									id="content"
 									placeholder="your content..."
+									defaultValue={post?.content}
 								/>
 							</div>
 							<div className="flex flex-col space-y-1.5">
 								<Label htmlFor="category">Category</Label>
-								<Select name="category">
+								<Select name="category" defaultValue={post?.category}>
 									<SelectTrigger id="framework">
 										<SelectValue placeholder="Select" />
 									</SelectTrigger>
@@ -71,25 +81,18 @@ export function AdminForm() {
 						</div>
 					</CardContent>
 					<CardFooter className="flex justify-between">
-						<Button variant="outline">Cancel</Button>
-						<Button>Publish</Button>
+						<Link 
+							href={'/'}
+							className={buttonVariants({variant: "secondary"})}
+						>
+							Cancel
+						</Link>
+						<Button type="submit">
+							{post?.id ? "Update Post" : "Publish Post"}
+						</Button>
 					</CardFooter>
 				</Card>
 			</form>
-			<div className="mt-8 flex justify-center gap-4">
-				{/* <Link
-					className={buttonVariants({ variant: "destructive" })}
-					href="/admin/delete"
-				>
-				</Link> */}
-				<DeletePostButton />
-				<Link
-					className={buttonVariants({ variant: "secondary" })}
-					href="/admin/edit"
-				>
-					Edit Posts
-				</Link>
-			</div>
 		</div>
 	);
 }

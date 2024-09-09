@@ -7,7 +7,9 @@ const NavBar = () => {
 		<div className="flex items-center justify-between py-6 ">
 			<div className="flex items-center gap-4">
 				<Image src="/favicon.ico" alt="logo" width={32} height={32} />
-				<h1 className="text-lg font-semibold">Joa&apos;s Dev Journal</h1>
+				<Link href={'/'}>
+					<h1 className="text-lg font-semibold">Joa&apos;s Dev Journal</h1>
+				</Link>
 			</div>
 			<div className="flex items-center justify-evenly gap-10">
                 <div className="flex items-center gap-6">

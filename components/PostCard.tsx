@@ -1,5 +1,5 @@
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Post } from "@prisma/client";
 import clsx from "clsx";
 import Image from "next/image";
@@ -15,7 +15,7 @@ const PostCard = ({post}: {post: Post}) => {
 					width={1600}
 				/>
 				<CardHeader className="font-medium text-lg m-0">
-                    {post.name}
+                    <CardTitle>{post.name}</CardTitle>
                 </CardHeader>
 				<CardContent>
 					<p className="text-md font-medium text-slate-500 dark:text-stone-400 text-balance">
