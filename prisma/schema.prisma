@@ -19,6 +19,7 @@ datasource db {
 model Post {
   id       Int   @id @default(autoincrement())
   name     String
+  description  String 
   content  String
   category String @default("personal")
   createdAt DateTime @default(now())

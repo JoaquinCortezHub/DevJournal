@@ -16,7 +16,7 @@ async function Home() {
           <Image src='/profile.jpg' alt="profile" width={100} height={50} className="rounded-full h-28 object-cover"/>
         </div>
       </div>
-      <div className="text-center mt-6">
+      <div className="text-center mt-2">
         <h1 className="text-5xl font-bold text-slate-800 dark:text-stone-200 leading-tight">Welcome to my dev Journal.<br />I&apos;m Joaquín👋</h1>
       </div>
       <div className="text-center mt-4 mb-8">
@@ -28,14 +28,16 @@ async function Home() {
         </p>
       </div>
       <hr />
-      <div className="mt-8 grid grid-cols-3 gap-4">
+      <div className="mt-8 mb-12  grid grid-cols-3 gap-4">
         {posts.map((post) => (
           <Card key={post.id}>
-            <CardHeader>{post.name}</CardHeader>
+            <Image className="w-full rounded-t-lg" src="/cover.jpg" alt="post cover" height={32} width={1600} />
+            <CardHeader className="font-medium text-lg m-0">{post.name}</CardHeader>
             <CardContent>
-              <span>{new Date(post.createdAt).toLocaleDateString()}</span>
+              <p className="text-md font-medium text-slate-500 dark:text-stone-400 text-balance">{post.description}</p>
             </CardContent>
-            <CardFooter>
+            <CardFooter className="flex items-center justify-between">
+              <span className="text-slate-500 dark:text-slate-400">{new Date(post.createdAt).toLocaleDateString()}</span>
               <Badge variant={'outline'}>{post.category}</Badge>
             </CardFooter>
           </Card>

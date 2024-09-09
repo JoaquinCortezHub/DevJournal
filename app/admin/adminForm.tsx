@@ -21,26 +21,28 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import prisma from "@/lib/prisma";
 import { redirect } from "next/navigation";
+import Link from "next/link";
+import { buttonVariants } from "@/components/ui/button";
 
 export function AdminForm() {
-	async function createPost(formData: FormData) {
-		"use server"
+	async function createPost(formData: FormData) { //Function to capture the data from the form.
+		"use server";
 		const name = formData.get("name")?.toString();
+		const description = formData.get("description")?.toString();
 		const content = formData.get("content")?.toString();
 		const category = formData.get("category")?.toString();
 
-		console.log({name, content, category});
-
-		if(!name || !content || !category) {
+		if (!name || !description || !content || !category) {
 			return;
 		}
 
-		const newPost = await prisma.post.create({
+		const newPost = await prisma.post.create({ //Query to the database to create a new post.
 			data: {
 				name: name,
+				description: description,
 				content: content,
 				category: category,
-			}
+			},
 		});
 
 		console.log(newPost);
@@ -48,21 +50,36 @@ export function AdminForm() {
 	}
 
 	return (
-		<form action={createPost}>
-			<Card className="w-[650px]">
-				<CardHeader>
-					<CardTitle>Create post</CardTitle>
-					<CardDescription>Introduce the post info and content.</CardDescription>
-				</CardHeader>
-				<CardContent>
+		<div>
+			<form action={createPost}>
+				<Card className="w-[650px]">
+					<CardHeader>
+						<CardTitle>Create post</CardTitle>
+						<CardDescription>
+							Introduce the post info and content.
+						</CardDescription>
+					</CardHeader>
+					<CardContent>
 						<div className="grid w-full items-center gap-4">
 							<div className="flex flex-col space-y-1.5">
 								<Label htmlFor="name">Post Name</Label>
 								<Input name="name" id="name" placeholder="Name of the post" />
 							</div>
 							<div className="flex flex-col space-y-1.5">
+								<Label htmlFor="description">Post Description</Label>
+								<Textarea
+									name="description"
+									id="description"
+									placeholder="Description of the post"
+								/>
+							</div>
+							<div className="flex flex-col space-y-1.5">
 								<Label htmlFor="content">Post Content</Label>
-								<Textarea name="content" id="content" placeholder="your content..." />
+								<Textarea
+									name="content"
+									id="content"
+									placeholder="your content..."
+								/>
 							</div>
 							<div className="flex flex-col space-y-1.5">
 								<Label htmlFor="category">Category</Label>
@@ -77,12 +94,27 @@ export function AdminForm() {
 								</Select>
 							</div>
 						</div>
-				</CardContent>
-				<CardFooter className="flex justify-between">
-					<Button variant="outline">Cancel</Button>
-					<Button>Publish</Button>
-				</CardFooter>
-			</Card>
-		</form>
+					</CardContent>
+					<CardFooter className="flex justify-between">
+						<Button variant="outline">Cancel</Button>
+						<Button>Publish</Button>
+					</CardFooter>
+				</Card>
+			</form>
+			<div className="mt-8 flex justify-center gap-4">
+				<Link
+					className={buttonVariants({ variant: "destructive" })}
+					href="/admin/delete"
+				>
+					Delete Posts
+				</Link>
+				<Link
+					className={buttonVariants({ variant: "secondary" })}
+					href="/admin/edit"
+				>
+					Edit Posts
+				</Link>
+			</div>
+		</div>
 	);
 }
