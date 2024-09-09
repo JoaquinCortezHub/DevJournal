@@ -19,36 +19,11 @@ import {
 	SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import prisma from "@/lib/prisma";
-import { redirect } from "next/navigation";
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
-
+import createPost from "@/actions/PostActions";
+import DeletePostButton from "@/components/DeletePostButton";
 export function AdminForm() {
-	async function createPost(formData: FormData) { //Function to capture the data from the form.
-		"use server";
-		const name = formData.get("name")?.toString();
-		const description = formData.get("description")?.toString();
-		const content = formData.get("content")?.toString();
-		const category = formData.get("category")?.toString();
-
-		if (!name || !description || !content || !category) {
-			return;
-		}
-
-		const newPost = await prisma.post.create({ //Query to the database to create a new post.
-			data: {
-				name: name,
-				description: description,
-				content: content,
-				category: category,
-			},
-		});
-
-		console.log(newPost);
-		redirect("/");
-	}
-
 	return (
 		<div>
 			<form action={createPost}>
@@ -102,12 +77,12 @@ export function AdminForm() {
 				</Card>
 			</form>
 			<div className="mt-8 flex justify-center gap-4">
-				<Link
+				{/* <Link
 					className={buttonVariants({ variant: "destructive" })}
 					href="/admin/delete"
 				>
-					Delete Posts
-				</Link>
+				</Link> */}
+				<DeletePostButton />
 				<Link
 					className={buttonVariants({ variant: "secondary" })}
 					href="/admin/edit"

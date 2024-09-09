@@ -1,5 +1,4 @@
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
+import PostCard from "@/components/PostCard";
 import prisma from "@/lib/prisma";
 import Image from "next/image";
 
@@ -30,17 +29,7 @@ async function Home() {
       <hr />
       <div className="mt-8 mb-12  grid grid-cols-3 gap-4">
         {posts.map((post) => (
-          <Card key={post.id}>
-            <Image className="w-full rounded-t-lg" src="/cover.jpg" alt="post cover" height={32} width={1600} />
-            <CardHeader className="font-medium text-lg m-0">{post.name}</CardHeader>
-            <CardContent>
-              <p className="text-md font-medium text-slate-500 dark:text-stone-400 text-balance">{post.description}</p>
-            </CardContent>
-            <CardFooter className="flex items-center justify-between">
-              <span className="text-slate-500 dark:text-slate-400">{new Date(post.createdAt).toLocaleDateString()}</span>
-              <Badge variant={'outline'}>{post.category}</Badge>
-            </CardFooter>
-          </Card>
+          <PostCard post={post} key={post.id} />
         ))}
       </div>
     </div>
